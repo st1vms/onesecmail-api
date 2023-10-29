@@ -18,7 +18,7 @@ with open(
 
 setup(
     name=__PROJECT_NAME,
-    version="0.1.0",
+    version="0.1.1",
     author="st1vms",
     author_email="stefano.maria.salvatore@gmail.com",
     description=__DESCRIPTION,
