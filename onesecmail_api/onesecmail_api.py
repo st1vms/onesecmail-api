@@ -37,8 +37,6 @@ class MailMessage:
     html_body: str
 
 
-__DOMAIN = "txcct.com"
-
 __BASE_URL = "https://www.1secmail.com/api/v1/"
 
 
@@ -48,15 +46,20 @@ def get_domain_list() -> list[str]:
     return http_get(__BASE_URL + endpoint, timeout=2).json()
 
 
-def gen_random_emails(count: int = 1) -> list[str]:
-    """Generate random emails"""
+def gen_random_emails(count: int = 1, domain: str = None) -> list[str]:
+    """Generate random emails, use `count` argument to change number of emails generated.
+
+    Use `domain` argument to override generated email domain"""
+
     if count <= 0:
         return ValueError("'count' must be positive")
     endpoint = f"?action=genRandomMailbox&count={count}"
     res = http_get(__BASE_URL + endpoint, timeout=2).json()
     if not res:
         return []
-    return list(map(lambda e: e.split("@", maxsplit=1)[0] + f"@{__DOMAIN}", res))
+    if not domain:
+        return res
+    return list(map(lambda e: e.split("@", maxsplit=1)[0] + f"@{domain}", res))
 
 
 def fetch_mailbox(email: str) -> list[MailBoxMessage] | None:
